@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 const database = {
     users: [
         {
@@ -40,6 +43,13 @@ app.post('/signin', (req, res)=>{
 app.post('/register', (req, res)=>{
 
     const {email, name, password} = req.body;
+
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+            // Store hash in your password DB.
+            console.log(hash);
+        });
+    });
 
     database.users.push({
         id: '125',
